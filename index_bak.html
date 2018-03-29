@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var infoWindows = [];
+        var wdw = false;
+        function initMap(){
+            var dataCoord = [
+                {"coords":{lat: -5.294410893035009, lng: 105.19383024492186}, "info":"a"},
+                {"coords":{lat: -5.387389246612605, lng: 105.04688810624998}, "info":"b"},
+                {"coords":{lat: -5.510426916177955, lng: 105.12241911210936}, "info":"c"},
+                {"coords":{lat: -5.376451350513152, lng: 105.45200895585936}, "info":"d"},
+                {"coords":{lat: -5.2123595481450975, lng: 105.42454313554686}, "info":"e"},
+                {"coords":{lat: -5.178168314140388, lng: 105.13889860429686}, "info":"f"},
+                {"coords":{lat: -5.392858120844461, lng: 105.6195504597656}, "info":"g"},
+                {"coords":{lat: -5.286206245727403, lng: 105.60444425859373}, "info":"h"},
+                {"coords":{lat: -5.294410893035009, lng: 105.41767668046873}, "info":"i"},
+                {"coords":{lat: -5.432505982236491, lng: 105.53028654374998}, "info":"j"},
+                {"coords":{lat: -5.231505826984613, lng: 105.62367033281248}, "info":"k"},
+                {"coords":{lat: -5.157652685379866, lng: 105.25425504960936}, "info":"l"},
+                {"coords":{lat: -5.489922392464849, lng: 105.56324552812498}, "info":"m"},
+                {"coords":{lat: -5.617038969589283, lng: 105.58521818437498}, "info":"n"},
+                {"coords":{lat: -5.390123689885157, lng: 105.06199430742186}, "info":"o"},
+                {"coords":{lat: -5.465316033256497, lng: 104.86286711015623}, "info":"p"},
+                {"coords":{lat: -5.642399841507991, lng: 105.05238127031248}, "info":"q"},
+                {"coords":{lat: -5.415494263481463, lng: 105.0098092488281}, "info":"r"},
+                {"coords":{lat: -5.222694138117238, lng: 104.99744962968748}, "info":"s"},
+                {"coords":{lat: -5.207650471169726, lng: 105.47535490312498}, "info":"t"},
+                {"coords":{lat: -5.11351893732424, lng: 105.06983903245805}, "info":"u"},
+                {"coords":{lat: -5.086161845860489, lng: 104.7320094426143}, "info":"v"},
+                {"coords":{lat: -5.135403769235052, lng: 105.55873063402055}, "info":"w"},
+            ];
+
+            var bdl = {lat: -5.4284046, lng: 105.2006967};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: bdl
+            });
+
+            // var marker = new google.maps.Marker({
+            //     position: bdl,
+            //     map: map
+            // });
+            
+            
+            // map.addListener('click', function(event){
+            //     marker.setPosition(event.latLng);
+            //     console.log(marker.position.toString());
+            //     latlong = new google.maps.LatLng(marker.position.toString());
+            //     setMarker(latlong, map);
+            // });
+            
+            for (var index = 0; index < dataCoord.length; index++) {
+                var marker = setMarker(dataCoord[index].coords, map, index);
+                var myInfoWindow = setInfoWindow(dataCoord[index].info, dataCoord[index].coords.lat, dataCoord[index].coords.lng);
+                infoWindows.push(myInfoWindow);
+                getInfoWindow(marker, map);
+                
+            }
+        }
+
+        function setMarker(coords, peta, index){
+            return new google.maps.Marker({
+                position: coords,
+                map: peta,
+                infoWindowIndex: index
+            });
+        }
+
+        function setInfoWindow(info, lat, lng){
+            return new google.maps.InfoWindow({
+                content: info+"<br>"+lat+"<br>"+lng
+            });
+        }
+
+        function getInfoWindow(marker, map){
+            google.maps.event.addListener(marker, 'click', function() {
+                if( wdw ) {
+                    wdw.close();
+                }
+                wdw=infoWindows[this.infoWindowIndex];
+                infoWindows[this.infoWindowIndex].open(map, this);
+            });
+        }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6oozC3j5P4OO-ySIOBR16Quyx8sbOVF4&callback=initMap">
+    </script>
+</body>
+</html>
